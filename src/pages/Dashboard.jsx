@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import {data, useNavigate } from 'react-router-dom';
 import DashboardLayout from "../components/dashboard/DashboardLayout";
 import DashboardOverview from "../components/dashboard/DashboardOverview";
 import CategoryManager from "../components/categories/CategoryManager";
@@ -149,7 +149,92 @@ const Dashboard = () => {
         }
     };
 
-    // Similar handlers for subcategories and blogs...
+    // Blog Handler
+    const handleCreateBlog = async (blogData) => {
+        try{
+            const response = await blogService.createBlog({
+                ...blogData, 
+                authorId: user.id
+            });
+
+            if(response.success){
+                showMessage('success', "Blog created successfully!");  
+                loadUserData();
+                setShowBlogForm(false); 
+            };
+        } catch(error){
+            showMessage('error', error.message || 'Failed to create Blog');
+        }
+    };
+
+    const handleUpdateBlog = async (id, blogData) => {
+        try{
+            const response = await blogService.updateBlog(id, blogData);
+            if(response.success){
+                showMessage('success', 'Blog updated successfully!');
+                loadUserData();
+                setShowBlogForm(false);
+                setEditingItem(null);
+            }
+        }catch(error){
+            showMessage('error', 'Failed to update blog');
+        }
+    };
+
+    const handleDeleteBlog = async (id) => {
+        if(!window.confirm('Are you sure you want to delete this blog?')) return;
+        try{
+            const response = await blogService.deleteBlog(id);
+            if(response.success){
+                showMessage('success', 'Blog deleted successfully!');
+            }
+        }catch(error){
+            setMessage('error', 'Failed to delete blog');
+        }
+    };
+
+    // SubCategory Handlers
+    const handleCreateSubCategory = async (data) => {
+        try {
+            const response = await subcategoryService.createSubcategory({
+                ...data, createdBy: user.id
+            });
+            if(response.success){
+                showMessage('success', 'Subcategory created!');
+                loadUserData();
+                setShowSubCategoryForm(false);
+            }
+        }catch(error){
+            setMessage('error', 'Error creating subcategory');
+        }
+    };
+
+    const handleUpdateSubCategory = async (id, data) => {
+    try {
+        const response = await subcategoryService.updateSubCategory(id, data);
+        if (response.success) {
+            showMessage('success', 'Subcategory updated!');
+            loadUserData();
+            setShowSubCategoryForm(false);
+            setEditingItem(null);
+        }
+       } catch (error){
+            showMessage('error', 'Error updating subcategory'); 
+        }
+    };
+
+    const handleDeleteSubCategory = async (id) => {
+    if (!window.confirm('Delete this subcategory?')) return;
+    try {
+        const response = await subcategoryService.deleteSubCategory(id);
+        if (response.success) {
+            showMessage('success', 'Subcategory deleted!');
+            loadUserData();
+        }
+    } catch(error) { 
+            showMessage('error', 'Error deleting subcategory'); 
+        }
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('currentUser');

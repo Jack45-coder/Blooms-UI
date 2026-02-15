@@ -27,10 +27,11 @@ const BlogManager = ({
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
         const blogData = {
             ...formData,
             tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-            authorId: user.id
+            authorId: currentUser.id
         };
 
         if (editingItem) {
@@ -38,7 +39,7 @@ const BlogManager = ({
         } else {
             onCreate(blogData);
         }
-
+        setShowForm(false);
         resetForm();
     };
 
