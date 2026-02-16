@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {data, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DashboardLayout from "../components/dashboard/DashboardLayout";
 import DashboardOverview from "../components/dashboard/DashboardOverview";
 import CategoryManager from "../components/categories/CategoryManager";
@@ -33,76 +33,79 @@ const Dashboard = () => {
 
     const [user, setUser] = useState(null);
 
+    const showMessage = (type, text) => {
+        setMessage({ type, text });
+        setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    };
+
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("currentUser"));
         if (storedUser) {
             setUser(storedUser);
+        }else{
+            navigate('/login');
         }
     }, []);
 
     useEffect(() => {
-        if (user) {
+        if (user?.id) {
             loadUserData();
-            loadAllCategories();
         }
     }, [user]);
 
     const loadUserData = async () => {
-        setLoading(true);
-        try {
-            const blogsRes = await blogService.getBlogsByAuthor(user.id);
-            if (blogsRes.success) {
-                setMyBlogs(blogsRes.data || []);
-            }
+    setLoading(true);
+    try {
+        const[categoriesRes, subcategoriesRes, blogsRes] = await Promise.all([
+            // All APIs call parallel!
+            categoryService.getAllCategories(),
+            subcategoryService.getAllSubCategories(),
+            blogService.getBlogsByAuthor(user.id)
+        ]);
+        console.log()
 
-            const categoriesRes = await categoryService.getAllCategories();
-            const subcategoriesRes = await subcategoryService.getAllSubCategories();
+        // Load all Categories!
+        if(categoriesRes?.success && categoriesRes.data){
+            const userCategories = categoriesRes.data.filter(cat => {
+                const creator = String(cat.createdBy || "");
+                const currentUserId = String(user.id || "");
+                console.log(currentUserId) // isi ka category sirf ui m show krna hai 
+            return creator === currentUserId; 
+        });
 
-            if (categoriesRes.success) {
-                const userCategories = (categoriesRes.data || []).filter(
-                    cat => cat.createdBy === user.id
-                );
-                setMyCategories(userCategories);
-            }
-
-            if (subcategoriesRes.success) {
-                const userSubcategories = (subcategoriesRes.data || []).filter(
-                    sub => sub.createdBy === user.id
-                );
-                setMySubcategories(userSubcategories);
-            }
-        } catch (error) {
-            showMessage('error', 'Failed to load your data');
-        } finally {
-            setLoading(false);
+            setMyCategories(userCategories);
+            setAllCategories(categoriesRes.data || []);
         }
-    };
+        
+        
+    } catch (error) {
+        console.error('Error in loadUserData:', error);
+        showMessage('error', 'Failed to load your data');
+    } finally {
+        setLoading(false);
+    }
+};
 
-    const loadAllCategories = async () => {
-        try {
-            const response = await categoryService.getAllCategories();
-            if (response.success) {
-                setAllCategories(response.data || []);
-            }
-        } catch (error) {
-            console.error('Failed to load categories:', error);
-        }
-    };
+    // const loadAllCategories = async () => {
+    //     try {
+    //         const response = await categoryService.getAllCategories();
+    //         if (response.success) {
+    //             setAllCategories(response.data || []);
+    //         }
+    //     } catch (error) {
+    //         console.error('Failed to load categories:', error);
+    //     }
+    // };
 
     const loadSubcategoriesByCategory = async (categoryId) => {
-        try {
-            const response = await subcategoryService.getSubCategoriesByCategory(categoryId);
-            if (response.success) {
-                setAvailableSubcategories(response.data || []);
-            }
-        } catch (error) {
-            console.error('Failed to load subcategories:', error);
-        }
-    };
-
-    const showMessage = (type, text) => {
-        setMessage({ type, text });
-        setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+        // try {
+        //     const response = await subcategoryService.getSubCategoriesByCategory(categoryId);
+        //     if (response.success) {
+        //         setAvailableSubcategories(response.data || []);
+        //     }
+        // } catch (error) {
+        //     console.error('Failed to load subcategories:', error);
+        // }
     };
 
     // CRUD Handlers

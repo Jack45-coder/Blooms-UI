@@ -30,9 +30,9 @@ const Layout = () => {
       {/* Main Content */}
       <main
         id="main-content"
-        className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8 transition-all duration-300"
+        className="flex-1 transition-all duration-300"
       >
-        <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 min-h-[60vh]">
+        <div className="min-h-[60vh]">
           <Outlet />
         </div>
       </main>

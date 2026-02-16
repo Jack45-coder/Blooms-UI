@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FaEye } from 'react-icons/fa';
 import BlogPreview from './BlogPreview';
 
@@ -7,6 +7,8 @@ const BlogForm = ({
     loadSubcategoriesByCategory, onSubmit, onCancel,
     previewMode, setPreviewMode, isEditing
 }) => {
+
+    // Category change hone par subcategories fetch karo
     useEffect(() => {
         if (formData.categoryId) {
             loadSubcategoriesByCategory(formData.categoryId);
@@ -53,7 +55,7 @@ const BlogForm = ({
                 <input
                     type="text"
                     placeholder="Blog Title"
-                    value={formData.title}
+                    value={formData.title || ''}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl
                              text-white placeholder-gray-600 focus:outline-none focus:ring-2
@@ -63,7 +65,7 @@ const BlogForm = ({
 
                 <div className="grid grid-cols-2 gap-4">
                     <select
-                        value={formData.categoryId}
+                        value={formData.categoryId || ''}
                         onChange={(e) => {
                             setFormData({
                                 ...formData,
@@ -85,7 +87,7 @@ const BlogForm = ({
                     </select>
 
                     <select
-                        value={formData.subCategoryId}
+                        value={formData.subCategoryId || ''}
                         onChange={(e) => setFormData({ ...formData, subCategoryId: e.target.value })}
                         className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl
                                  text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50
