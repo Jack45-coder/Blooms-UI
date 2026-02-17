@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const BlogCard = ({ blog, categoryName, onEdit, onDelete, onUpdate }) => {
@@ -31,7 +30,7 @@ const BlogCard = ({ blog, categoryName, onEdit, onDelete, onUpdate }) => {
                                 </span>
                             </div>
                             <div className="flex items-center gap-3 text-sm text-gray-500 mb-2 flex-wrap">
-                                <span>📅 {new Date(blog.createdAt).toLocaleDateString()}</span>
+                                <span>📅 {blog.createdDTTM?.$date ? new Date(blog.createdDTTM.$date).toLocaleDateString() : 'No Date'}</span>
                                 <span>👤 {categoryName}</span>
                                 {blog.views && <span>👁️ {blog.views} views</span>}
                             </div>
@@ -39,7 +38,7 @@ const BlogCard = ({ blog, categoryName, onEdit, onDelete, onUpdate }) => {
                     </div>
 
                     <p className="text-gray-400 mb-3 line-clamp-2">
-                        {blog.content.substring(0, 150)}...
+                        {(blog.description || blog.content || "").substring(0, 150)}...
                     </p>
 
                     {blog.tags && blog.tags.length > 0 && (

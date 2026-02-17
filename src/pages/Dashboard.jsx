@@ -62,19 +62,42 @@ const Dashboard = () => {
             subcategoryService.getAllSubCategories(),
             blogService.getBlogsByAuthor(user.id)
         ]);
-        console.log()
 
-        // Load all Categories!
+        // Load User Categories!
         if(categoriesRes?.success && categoriesRes.data){
             const userCategories = categoriesRes.data.filter(cat => {
-                const creator = String(cat.createdBy || "");
-                const currentUserId = String(user.id || "");
-                console.log(currentUserId) // isi ka category sirf ui m show krna hai 
-            return creator === currentUserId; 
+            const creatorId = String(cat.createdBy || "");
+            const currentUserId = String(user.id || "");
+            return creatorId === currentUserId; 
         });
 
             setMyCategories(userCategories);
             setAllCategories(categoriesRes.data || []);
+        }
+
+        
+        // Load User subCategories!
+        if(subcategoriesRes?.success && subcategoriesRes.data){
+            const userSubCategories = subcategoriesRes.data.filter(sCat => {
+            const creatorId = String(sCat.createdBy || "");
+            const currentUserId = String(user.id || "");
+            return creatorId === currentUserId;
+            });
+
+            setMySubcategories(userSubCategories);
+            setAvailableSubcategories(subcategoriesRes.data || []);
+        }
+
+        // Load User Blogs
+        if(blogsRes?.success && blogsRes.data){
+            const currentUserId = String(user.id || "");
+            const userBlogs = blogsRes.data.filter(blog => {
+            const authorId = String(blog.authorId || "");
+            
+            return authorId === currentUserId;
+            });
+
+            setMyBlogs(userBlogs);
         }
         
         
@@ -98,14 +121,14 @@ const Dashboard = () => {
     // };
 
     const loadSubcategoriesByCategory = async (categoryId) => {
-        // try {
-        //     const response = await subcategoryService.getSubCategoriesByCategory(categoryId);
-        //     if (response.success) {
-        //         setAvailableSubcategories(response.data || []);
-        //     }
-        // } catch (error) {
-        //     console.error('Failed to load subcategories:', error);
-        // }
+        try {
+            const response = await subcategoryService.getSubCategoriesByCategory(categoryId);
+            if (response.success) {
+                setAvailableSubcategories(response.data || []);
+            }
+        } catch (error) {
+            console.error('Failed to load subcategories:', error);
+        }
     };
 
     // CRUD Handlers
@@ -199,7 +222,7 @@ const Dashboard = () => {
     // SubCategory Handlers
     const handleCreateSubCategory = async (data) => {
         try {
-            const response = await subcategoryService.createSubcategory({
+            const response = await subcategoryService.createSubCategory({
                 ...data, createdBy: user.id
             });
             if(response.success){

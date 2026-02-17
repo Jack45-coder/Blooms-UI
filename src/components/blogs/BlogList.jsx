@@ -1,9 +1,11 @@
 import React from 'react';
 import BlogCard from './BlogCard';
 
-const BlogList = ({ blogs, allCategories, availableSubcategories, onEdit, onDelete, onUpdate }) => {
-    const getCategoryName = (categoryId) => {
-        const category = allCategories.find(c => c.id === categoryId);
+const BlogList = ({ blogs, allCategories, onEdit, onDelete, onUpdate }) => {
+    const getCategoryName = (blog) => {
+        // Mapping blog by id
+        const catId = blog.categoryId || blog.categoryMappings?.[0]?.categoryId;
+        const category = allCategories.find(c => c.id === catId);
         return category?.name || 'Unknown';
     };
 
@@ -11,7 +13,7 @@ const BlogList = ({ blogs, allCategories, availableSubcategories, onEdit, onDele
         <div className="space-y-4">
             {blogs.map((blog) => (
                 <BlogCard
-                    key={blog.id}
+                    key={blog.id || blog._id}
                     blog={blog}
                     categoryName={getCategoryName(blog.categoryId)}
                     onEdit={onEdit}

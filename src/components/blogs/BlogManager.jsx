@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import BlogForm from './BlogForm';
 import BlogList from './BlogList';
@@ -14,6 +14,7 @@ const BlogManager = ({
 }) => {
     const [formData, setFormData] = useState({
         title: '',
+        description: '',
         content: '',
         categoryId: '',
         subCategoryId: '',
@@ -29,10 +30,21 @@ const BlogManager = ({
         e.preventDefault();
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
         const blogData = {
-            ...formData,
-            tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-            authorId: currentUser.id
+            title: formData.title,
+            description: formData.description,
+            content: formData.content,
+            status: formData.status,
+            authorId: currentUser?.id || "",
+            tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [],
+
+            categoryMappings: [
+                {
+                    categoryId: formData.categoryId,
+                    subCategoryIds: formData.subCategoryId ? [formData.subCategoryId] : []
+                }
+            ]
         };
+        
 
         if (editingItem) {
             onUpdate(editingItem.id, blogData);
@@ -45,7 +57,7 @@ const BlogManager = ({
 
     const resetForm = () => {
         setFormData({
-            title: '', content: '', categoryId: '', subCategoryId: '',
+            title: '', description: '', content: '', categoryId: '', subCategoryId: '',
             tags: '', status: 'DRAFT', featuredImage: ''
         });
         setSelectedCategory('');
@@ -56,6 +68,7 @@ const BlogManager = ({
         setEditingItem(blog);
         setFormData({
             title: blog.title,
+            description: blog.description,
             content: blog.content,
             categoryId: blog.categoryId,
             subCategoryId: blog.subCategoryId,
