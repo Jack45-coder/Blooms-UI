@@ -15,7 +15,7 @@ const BlogList = ({ blogs, allCategories, onEdit, onDelete, onUpdate }) => {
                 <BlogCard
                     key={blog.id || blog._id}
                     blog={blog}
-                    categoryName={getCategoryName(blog.categoryId)}
+                    categoryName={getCategoryName(blog)}
                     onEdit={onEdit}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
