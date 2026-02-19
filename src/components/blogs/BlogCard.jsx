@@ -5,10 +5,10 @@ const BlogCard = ({ blog, categoryName, onEdit, onDelete, onUpdate }) => {
         <div className="group bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6
                       hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.2)]">
             <div className="flex gap-4">
-                {blog.featuredImage && (
+                {blog.imageUrl && (
                     <div className="shrink-0">
                         <img
-                            src={blog.featuredImage}
+                            src={blog.imageUrl}
                             alt={blog.title}
                             className="w-32 h-32 object-cover rounded-xl"
                         />

@@ -35,9 +35,9 @@ const BlogPreview = ({ formData, getCategoryName, getSubCategoryName, onBack }) 
                     </span>
                 </div>
 
-                {formData.featuredImage && (
+                {formData.imageUrl && (
                     <img
-                        src={formData.featuredImage}
+                        src={formData.imageUrl}
                         alt={formData.title}
                         className="w-full max-h-96 object-cover rounded-xl mb-4"
                     />

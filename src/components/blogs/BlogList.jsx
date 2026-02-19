@@ -13,7 +13,7 @@ const BlogList = ({ blogs, allCategories, onEdit, onDelete, onUpdate }) => {
         <div className="space-y-4">
             {blogs.map((blog) => (
                 <BlogCard
-                    key={blog.id || blog._id}
+                    key={blog.id}
                     blog={blog}
                     categoryName={getCategoryName(blog)}
                     onEdit={onEdit}

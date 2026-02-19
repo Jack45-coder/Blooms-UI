@@ -16,11 +16,11 @@ const BlogManager = ({
         title: '',
         description: '',
         content: '',
+        imageUrl: '',
         categoryId: '',
         subCategoryId: '',
         tags: '',
         status: 'DRAFT',
-        featuredImage: ''
     });
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('ALL');
@@ -33,6 +33,7 @@ const BlogManager = ({
             title: formData.title,
             description: formData.description,
             content: formData.content,
+            imageUrl: formData.imageUrl,
             status: formData.status,
             authorId: currentUser?.id || "",
             tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [],
@@ -58,7 +59,7 @@ const BlogManager = ({
     const resetForm = () => {
         setFormData({
             title: '', description: '', content: '', categoryId: '', subCategoryId: '',
-            tags: '', status: 'DRAFT', featuredImage: ''
+            tags: '', status: 'DRAFT', imageUrl: ''
         });
         setSelectedCategory('');
         setPreviewMode(false);
@@ -74,7 +75,7 @@ const BlogManager = ({
             subCategoryId: blog.subCategoryId,
             tags: blog.tags?.join(', ') || '',
             status: blog.status,
-            featuredImage: blog.featuredImage || ''
+            imageUrl: blog.imageUrl || ''
         });
         setSelectedCategory(blog.categoryId);
         setShowForm(true);

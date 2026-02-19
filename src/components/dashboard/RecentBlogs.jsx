@@ -16,7 +16,7 @@ const RecentBlogs = ({ recentBlogs, onViewAll }) => {
             {recentBlogs.length > 0 ? (
                 <div className="space-y-3">
                     {recentBlogs.map((blog) => (
-                        <div key={blog.id}
+                        <div key={blog.id }
                              className="flex items-center justify-between p-3 bg-white/5
                                       rounded-xl hover:bg-white/10 transition-all">
                             <div>

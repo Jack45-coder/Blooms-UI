@@ -114,11 +114,21 @@ const BlogForm = ({
                     required
                 />
 
+                <textarea
+                    placeholder='Short Description'
+                    value={formData.description || ''}
+                    onChange={(e) => setFormData({...formData, description: e.target.value })}
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl
+                             text-white placeholder-gray-600 focus:outline-none focus:ring-2
+                             focus:ring-blue-500/50 focus:bg-white/10 transition-all resize-y"
+                    rows="2"
+                />
+
                 <input
                     type="url"
-                    placeholder="Featured Image URL (optional)"
-                    value={formData.featuredImage}
-                    onChange={(e) => setFormData({ ...formData, featuredImage: e.target.value })}
+                    placeholder="Blog image URL (optional)"
+                    value={formData.imageUrl || ''}
+                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl
                              text-white placeholder-gray-600 focus:outline-none focus:ring-2
                              focus:ring-blue-500/50 focus:bg-white/10 transition-all"
