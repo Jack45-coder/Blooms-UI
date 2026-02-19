@@ -96,9 +96,11 @@ const blogService = {
     },
 
     // Update Blog
-    updateBlog: async (blogId, blogData) => {
+    updateBlog: async (blogId, blogData, userId) => {
         try {
-            const response = await api.put(`/blogs/${blogId}`, blogData);
+            const response = await api.put(`/blogs/${blogId}`, blogData, {
+                headers: {'userId': userId}
+            });
             return response.data;
         } catch (error) {
             console.error('Update blog error:', error);
@@ -107,9 +109,13 @@ const blogService = {
     },
 
     // Delete Blog
-    deleteBlog: async (blogId) => {
+    deleteBlog: async (blogId, userId) => {
         try {
-            const response = await api.delete(`/blogs/${blogId}`);
+            const response = await api.delete(`/blogs/${blogId}`,{
+                headers: {
+                'userId': userId 
+            }
+        });
             return response.data;
         } catch (error) {
             console.error('Delete blog error:', error);

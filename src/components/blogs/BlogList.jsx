@@ -6,7 +6,7 @@ const BlogList = ({ blogs, allCategories, onEdit, onDelete, onUpdate }) => {
         // Mapping blog by id
         const catId = blog.categoryId || blog.categoryMappings?.[0]?.categoryId;
         const category = allCategories.find(c => c.id === catId);
-        return category?.name || 'Unknown';
+        return category?.name || 'Uncategorized';
     };
 
     return (

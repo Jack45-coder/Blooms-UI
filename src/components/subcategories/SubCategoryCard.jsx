@@ -25,7 +25,7 @@ const SubCategoryCard = ({ subcategory, categoryName, onEdit, onDelete }) => {
             </div>
             <div className="p-4">
                 <p className="text-gray-400 text-sm mb-3 line-clamp-2">
-                    {subcategory.description || 'No description provided'}
+                    {subcategory.description ? subcategory.description : "No description provided"}
                 </p>
                 <div className="flex gap-2">
                     <button

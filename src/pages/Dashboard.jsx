@@ -194,8 +194,11 @@ const Dashboard = () => {
     };
 
     const handleUpdateBlog = async (id, blogData) => {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const userId = currentUser?.id || currentUser?.authorId;
+
         try{
-            const response = await blogService.updateBlog(id, blogData);
+            const response = await blogService.updateBlog(id, blogData, userId);
             if(response.success){
                 showMessage('success', 'Blog updated successfully!');
                 loadUserData();
@@ -209,10 +212,22 @@ const Dashboard = () => {
 
     const handleDeleteBlog = async (id) => {
         if(!window.confirm('Are you sure you want to delete this blog?')) return;
+
+
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+        const userId = currentUser?.id || currentUser?.authorId;
+
+        if(!userId){
+            alert("Session expired. Please login again.");
+            return;
+        }
+
         try{
-            const response = await blogService.deleteBlog(id);
+            const response = await blogService.deleteBlog(id, userId);
             if(response.success){
                 showMessage('success', 'Blog deleted successfully!');
+                loadUserData();
+                alert("Blog deleted!");
             }
         }catch(error){
             setMessage('error', 'Failed to delete blog');
