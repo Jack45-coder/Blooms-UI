@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const SubCategoryCard = ({ subcategory, categoryName, onEdit, onDelete }) => {
@@ -15,7 +14,7 @@ const SubCategoryCard = ({ subcategory, categoryName, onEdit, onDelete }) => {
                 <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent"></div>
                 <div className="absolute top-3 left-3">
                     <span className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full
-                                   text-xs text-white border border-white/30">
+                                   text-xs text-blue-200 border border-white/30">
                         {categoryName}
                     </span>
                 </div>
@@ -25,7 +24,7 @@ const SubCategoryCard = ({ subcategory, categoryName, onEdit, onDelete }) => {
             </div>
             <div className="p-4">
                 <p className="text-gray-400 text-sm mb-3 line-clamp-2">
-                    {subcategory.description ? subcategory.description : "No description provided"}
+                    {subcategory.description || "No description provided"}
                 </p>
                 <div className="flex gap-2">
                     <button

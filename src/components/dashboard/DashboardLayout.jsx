@@ -10,7 +10,7 @@ const DashboardLayout = ({ children, activeTab, setActiveTab, user, message, onL
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 user={user}
-                onLogout={onLogout}
+                // onLogout={onLogout}
             />
 
             <div className="flex-1 flex flex-col overflow-hidden">

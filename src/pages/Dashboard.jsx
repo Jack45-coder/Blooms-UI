@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
+import { useNavigate, Routes, Route } from 'react-router-dom';
 import DashboardLayout from "../components/dashboard/DashboardLayout";
 import DashboardOverview from "../components/dashboard/DashboardOverview";
 import CategoryManager from "../components/categories/CategoryManager";
@@ -11,15 +12,37 @@ import blogService from "../service/blogService";
 
 const Dashboard = () => {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('dashboard');
+    const location = useLocation();
+    const [activeTab, setActiveTab] = useState(localStorage.getItem('activeDashboardTab') || 'dashboard');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
+    const [searchParams, setSearchparams] = useSearchParams();
+
+    const currentTab = location.pathname.split('/').pop() === 'dashboard'
+                       ? 'dashboard'
+                       : location.pathname.split('/').pop();
+
+    const handleTabChange = (tabName) => {
+        if(tabName === 'dashboard'){
+            navigate('/dashboard');
+        }else{
+            navigate(`/dashboard/${tabName}`);
+        }
+    };
+
+    useEffect(() => {
+        const tabFromUrl = searchParams.get('tab');
+        if(tabFromUrl && tabFromUrl !== activeTab){
+            setActiveTab(tabFromUrl);
+        }
+    }, [searchParams]);
 
     // User's Own Data
     const [myCategories, setMyCategories] = useState([]);
     const [mySubcategories, setMySubcategories] = useState([]);
     const [myBlogs, setMyBlogs] = useState([]);
 
+    
     // All Categories for Selection
     const [allCategories, setAllCategories] = useState([]);
 
@@ -32,6 +55,11 @@ const Dashboard = () => {
     const [availableSubcategories, setAvailableSubcategories] = useState([]);
 
     const [user, setUser] = useState(null);
+
+    useEffect(() => {
+    localStorage.setItem('activeDashboardTab', activeTab);
+    }, [activeTab]);
+
 
     const showMessage = (type, text) => {
         setMessage({ type, text });
@@ -292,24 +320,24 @@ const Dashboard = () => {
 
     return (
         <DashboardLayout
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
+            activeTab={currentTab}
+            setActiveTab={handleTabChange}
             user={user}
             message={message}
-            onLogout={handleLogout}
+            // onLogout={handleLogout}
         >
-            {activeTab === 'dashboard' && (
-                <DashboardOverview
+            <Routes>
+                <Route path="/" element={
+                  <DashboardOverview
                     user={user}
                     stats={stats}
                     recentBlogs={myBlogs.slice(0, 5)}
                     loading={loading}
-                    onViewAll={setActiveTab}
-                />
-            )}
-
-            {activeTab === 'categories' && (
-                <CategoryManager
+                    onViewAll={handleTabChange}
+                  />  
+                }/>
+                <Route path="categories" element={
+                    <CategoryManager
                     categories={myCategories}
                     loading={loading}
                     showForm={showCategoryForm}
@@ -320,10 +348,9 @@ const Dashboard = () => {
                     onUpdate={handleUpdateCategory}
                     onDelete={handleDeleteCategory}
                 />
-            )}
-
-            {activeTab === 'subcategories' && (
-                <SubCategoryManager
+                }/>
+                <Route path="subcategories" element={
+                    <SubCategoryManager
                     subcategories={mySubcategories}
                     allCategories={allCategories}
                     loading={loading}
@@ -335,10 +362,9 @@ const Dashboard = () => {
                     onUpdate={handleUpdateSubCategory}
                     onDelete={handleDeleteSubCategory}
                 />
-            )}
-
-            {activeTab === 'blogs' && (
-                <BlogManager
+                }/>
+                <Route path="blogs" element={
+                    <BlogManager
                     blogs={myBlogs}
                     allCategories={allCategories}
                     loading={loading}
@@ -356,7 +382,8 @@ const Dashboard = () => {
                     onDelete={handleDeleteBlog}
                     user={user}
                 />
-            )}
+                }/>
+            </Routes>        
         </DashboardLayout>
     );
 };

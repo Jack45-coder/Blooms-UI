@@ -20,7 +20,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           
-          <Route path="dashboard" element={
+          <Route path="dashboard/*" element={
             <ProtectedRoute role="USER">
               <Dashboard />
             </ProtectedRoute>

@@ -1,17 +1,35 @@
-import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { use, useEffect, useState } from "react";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    setUser(storedUser);
+  },[location.pathname])
+
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem("lastTab");
+    setUser(null);
+    navigate("/login")
+  }
 
   const isActive = (path) => {
     return location.pathname === path;
   };
 
-  const navLinks = [
+  const navLinks = user 
+  ? [
+      { path: "/", label: "Home", icon: "🏠" },
+      { path: "/dashboard", label: "Dashboard", icon: "📊" },
+    ]
+  : [
     { path: "/", label: "Home", icon: "🏠" },
-    { path: "/dashboard", label: "Dashboard", icon: "📊" },
     { path: "/login", label: "Login", icon: "🔐" },
     { path: "/register", label: "Register", icon: "📝" }
   ];
@@ -49,6 +67,16 @@ const Navbar = () => {
                 <span>{link.label}</span>
               </Link>
             ))}
+
+          {/* Logout Button if user Logged In */}
+          {user &&(
+            <button 
+             onClick={handleLogout}
+             className="px-4 py-2 rounded-lg text-sm font-medium text-red-200 hover:bg-red-500/20 hover:text-red-100 transition-all"
+            >
+              Logout
+            </button>
+          )}
           </div>
 
           {/* Mobile Menu Button */}
