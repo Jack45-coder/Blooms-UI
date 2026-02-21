@@ -110,6 +110,19 @@ const Navbar = () => {
                 <span>{link.label}</span>
               </Link>
             ))}
+
+            {user && (
+              <button
+               onClick={() => {
+                handleLogout();
+                setIsMobileMenuOpen(false);
+               }}
+               className="w-full mt-2 px-4 py-3 rounded-lg text-sm font-medium text-red-200 hover:bg-red-500/20 hover:text-red-100 transition-all flex items-center space-x-3"
+              >
+               <span className="text-lg">🚪</span>
+               <span>Logout</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

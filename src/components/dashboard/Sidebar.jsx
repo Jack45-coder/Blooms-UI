@@ -51,7 +51,7 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
                     onClick={() => setActiveTab('blogs')}
                 />
 
-                <div className="absolute bottom-6 left-0 right-0 px-3">
+                {/* <div className="absolute bottom-6 left-0 right-0 px-3">
                     <button
                         onClick={onLogout}
                         className="flex items-center gap-3 px-6 py-3 w-full text-red-400
@@ -60,7 +60,7 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
                         <FaSignOutAlt />
                         <span className="font-medium">Logout</span>
                     </button>
-                </div>
+                </div> */}
             </nav>
         </div>
     );
