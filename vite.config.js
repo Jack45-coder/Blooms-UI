@@ -13,8 +13,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       "/api": {
-        // target: "https://blooms-1.onrender.com",
-        target: "http://localhost:8080",
+        target: "https://blooms-1.onrender.com",        
         changeOrigin: true
       }
     }
