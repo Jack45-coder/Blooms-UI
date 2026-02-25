@@ -4,7 +4,7 @@ import SidebarItem from './SidebarItem';
 
 const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
     return (
-        <div className="flex flex-col w-64 h-screen bg-[#0f0f12] border-r border-white/10 sticky top-0 overflow-y-auto">
+        <div className="flex flex-col w-64 h-full bg-[#0f0f12] border-r border-white/10 overflow-y-auto">
             <div className="p-6">
                 <h1 className="text-2xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                     My Dashboard
@@ -19,7 +19,7 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
                         {user?.name?.charAt(0)?.toUpperCase() || 'U'}
                     </div>
                     <div className='truncate'>
-                        <p className="text-sm font-bold text-white leading-tight">{user?.name || 'User'}</p>
+                        <p className="text-lg font-bold text-white leading-tight">{user?.name || 'User'}</p>
                         <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{user?.email || ''}</p>
                     </div>
                 </div>
