@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 
 const Layout = () => {
   const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard');
 
   // Scroll to top on route change
   useEffect(() => {
@@ -38,7 +39,7 @@ const Layout = () => {
       </main>
 
       {/* Footer */}
-      <Footer />
+      {!isDashboard && <Footer />}
 
       {/* Back to Top Button - Appears on scroll */}
       <BackToTopButton />

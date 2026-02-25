@@ -15,7 +15,7 @@ const DashboardLayout = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen w-full bg-[#0a0a0c] text-slate-200 overflow-hidden font-sans">
+    <div className="flex min-h-screen w-full bg-[#0a0a0c] text-slate-200 overflow-hidden font-sans pt-16">
       <aside
         className={`
         fixed inset-y-0 left-0 z-100 w-64 transform transition-transform duration-300 ease-in-out bg-[#0f0f12] 
@@ -41,7 +41,7 @@ const DashboardLayout = ({
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 h-[calc(100vh-64px)] overflow-hidden">
         <header className="shrink-0 relative z-40 overflow-hidden bg-[#0a0a0c] border-b border-white/10">
           <TopBar
             activeTab={activeTab}

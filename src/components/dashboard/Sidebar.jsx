@@ -11,21 +11,45 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
                 </h1>
             </div>
 
-            {/* User Info */}
-            <div className="mx-4 my-6 p-4 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-linear-to-r from-blue-500 to-indigo-600
-                                  flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/20">
-                        {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+            {/* --- USER INFO WITH RACING BORDER --- */}
+            <div className="px-4 mb-6">
+                <div className="group relative p-[1.5px] overflow-hidden rounded-2xl transition-all duration-500 hover:scale-[1.02]">
+                    
+                    {/* Always-On Animated Border Logic */}
+                    <div className="absolute inset-[-400%] animate-border-slow z-0 opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+                        <div 
+                            className="h-full w-full"
+                            style={{
+                                background: "conic-gradient(from 0deg, transparent 0%, transparent 40%, #3b82f6 50%, #8b5cf6 60%, transparent 70%, transparent 100%)"
+                            }}
+                        />
                     </div>
-                    <div className='truncate'>
-                        <p className="text-lg font-bold text-white leading-tight">{user?.name || 'User'}</p>
-                        <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{user?.email || ''}</p>
+
+                    {/* Inner Content Box */}
+                    <div className="relative z-10 flex items-center gap-3 p-3 bg-[#0a0a0c] rounded-[calc(1rem-1.5px)] border border-white/5">
+                        {/* Avatar with Glow Effect */}
+                        <div className="relative shrink-0">
+                            <div className="h-10 w-10 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                                {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                            </div>
+                            {/* Status Dot */}
+                            <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-green-500 border-2 border-[#0a0a0c] rounded-full"></div>
+                        </div>
+
+                        {/* Name and Email Details */}
+                        <div className='min-w-0 flex-1'>
+                            <p className="text-sm font-bold text-white leading-tight truncate">
+                                {user?.name || 'User'}
+                            </p>
+                            <p className="text-[9px] text-gray-500 uppercase tracking-tighter mt-1 truncate opacity-80">
+                                {user?.email || 'jackeyjazzbgp1234@gmail.com'}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <nav className="mt-6">
+            <nav className="mt-2">
                 <SidebarItem
                     icon={FaThLarge}
                     label="Dashboard"
@@ -50,17 +74,6 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
                     active={activeTab === 'blogs'}
                     onClick={() => setActiveTab('blogs')}
                 />
-
-                {/* <div className="absolute bottom-6 left-0 right-0 px-3">
-                    <button
-                        onClick={onLogout}
-                        className="flex items-center gap-3 px-6 py-3 w-full text-red-400
-                                 hover:bg-red-500/10 rounded-xl transition-all duration-300"
-                    >
-                        <FaSignOutAlt />
-                        <span className="font-medium">Logout</span>
-                    </button>
-                </div> */}
             </nav>
         </div>
     );

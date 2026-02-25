@@ -13,7 +13,7 @@ const TopBar = ({ activeTab, user, toggleSidebar }) => {
     };
 
     return (
-        <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-6 py-4">
+        <div className="bg-[#0a] backdrop-blur-xl border-b border-white/10 px-6 py-4">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-4">
                     {/* Mobile Toggle Button */}
@@ -22,7 +22,7 @@ const TopBar = ({ activeTab, user, toggleSidebar }) => {
                         className="p-2 text-white hover:bg-white/10 rounded-lg md:hidden transition-colors"
                     >
                         <Menu size={24} /> 
-                        {/* Agar icon nahi hai toh likhein: <span>☰</span> */}
+                        {/* Agar icon nahi toh: <span>☰</span> */}
                     </button>
 
                     <h2 className="text-xl font-semibold text-white">

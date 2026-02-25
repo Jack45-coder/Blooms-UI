@@ -8,3 +8,12 @@ html, body {
 #root {
   overflow-x: hidden;
 }
+
+@keyframes border-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-border-slow {
+  animation: border-rotate 6s linear infinite;
+}
