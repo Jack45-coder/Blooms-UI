@@ -15,6 +15,7 @@ const Dashboard = () => {
     const location = useLocation();
     const [activeTab, setActiveTab] = useState(localStorage.getItem('activeDashboardTab') || 'dashboard');
     const [loading, setLoading] = useState(false);
+    const [viewingBlog, setViewingBlog] = useState(null);
     const [message, setMessage] = useState({ type: '', text: '' });
     const [searchParams, setSearchparams] = useSearchParams();
 
@@ -381,9 +382,10 @@ const Dashboard = () => {
                     onUpdate={handleUpdateBlog}
                     onDelete={handleDeleteBlog}
                     user={user}
+                    onView={(blog) => setViewingBlog(blog)}
                 />
                 }/>
-            </Routes>        
+            </Routes>  
         </DashboardLayout>
     );
 };

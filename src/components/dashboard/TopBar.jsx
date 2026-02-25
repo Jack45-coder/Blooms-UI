@@ -13,7 +13,7 @@ const TopBar = ({ activeTab, user, toggleSidebar }) => {
     };
 
     return (
-        <div className=" bg-white/5 backdrop-blur-xl border-b border-white/10 px-6 py-4">
+        <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-6 py-4">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-4">
                     {/* Mobile Toggle Button */}

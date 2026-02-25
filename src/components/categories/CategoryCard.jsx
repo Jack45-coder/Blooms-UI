@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const CategoryCard = ({ category, onEdit, onDelete }) => {
@@ -21,22 +20,22 @@ const CategoryCard = ({ category, onEdit, onDelete }) => {
                 <p className="text-gray-400 text-sm mb-3 line-clamp-2">
                     {category.description || 'No description provided'}
                 </p>
-                <div className="flex gap-2">
+                <div className="flex gap-2 shrink-0">
                     <button
                         onClick={() => onEdit(category)}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2
-                                 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400
-                                 rounded-lg transition-all"
+                        title="Edit Category"
+                        className="p-2.5 bg-blue-500/20 hover:bg-blue-500/40 text-blue-400
+                                 rounded-xl transition-all border border-blue-500/30"
                     >
-                        <FaEdit /> Edit
+                        <FaEdit size={18} />
                     </button>
                     <button
                         onClick={() => onDelete(category.id)}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2
-                                 bg-red-500/20 hover:bg-red-500/30 text-red-400
-                                 rounded-lg transition-all"
+                        title="Delete Category"
+                        className="p-2.5 bg-red-500/20 hover:bg-red-500/40 text-red-400
+                                 rounded-xl transition-all border border-red-500/30"
                     >
-                        <FaTrash /> Delete
+                        <FaTrash size={18} />
                     </button>
                 </div>
             </div>

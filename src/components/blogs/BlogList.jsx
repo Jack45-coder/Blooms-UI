@@ -1,7 +1,6 @@
-import React from 'react';
 import BlogCard from './BlogCard';
 
-const BlogList = ({ blogs, allCategories, onEdit, onDelete, onUpdate }) => {
+const BlogList = ({ blogs, allCategories, onEdit, onDelete, onUpdate, onView }) => {
     const getCategoryName = (blog) => {
         // Mapping blog by id
         const catId = blog.categoryId || blog.categoryMappings?.[0]?.categoryId;
@@ -19,6 +18,7 @@ const BlogList = ({ blogs, allCategories, onEdit, onDelete, onUpdate }) => {
                     onEdit={onEdit}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
+                    onView={onView}
                 />
             ))}
         </div>

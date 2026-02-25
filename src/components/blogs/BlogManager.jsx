@@ -10,7 +10,7 @@ const BlogManager = ({
     blogs, allCategories, loading, showForm, setShowForm,
     editingItem, setEditingItem, selectedCategory, setSelectedCategory,
     availableSubcategories, setAvailableSubcategories,
-    loadSubcategoriesByCategory, onCreate, onUpdate, onDelete, user
+    loadSubcategoriesByCategory, onCreate, onUpdate, onDelete, user, onView
 }) => {
     const [formData, setFormData] = useState({
         title: '',
@@ -147,6 +147,7 @@ const BlogManager = ({
                     onEdit={handleEdit}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
+                    onView={onView}
                 />
             ) : (
                 <EmptyState

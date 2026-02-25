@@ -14,7 +14,7 @@ const SubCategoryCard = ({ subcategory, categoryName, onEdit, onDelete }) => {
                 <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent"></div>
                 <div className="absolute top-3 left-3">
                     <span className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full
-                                   text-xs text-blue-200 border border-white/30">
+                                   text-xs font-bold uppercase tracking-wider text-blue-200 border border-white/30">
                         {categoryName}
                     </span>
                 </div>
@@ -26,22 +26,22 @@ const SubCategoryCard = ({ subcategory, categoryName, onEdit, onDelete }) => {
                 <p className="text-gray-400 text-sm mb-3 line-clamp-2">
                     {subcategory.description || "No description provided"}
                 </p>
-                <div className="flex gap-2">
+                <div className="flex gap-2 shrink-0">
                     <button
                         onClick={() => onEdit(subcategory)}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2
-                                 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400
-                                 rounded-lg transition-all"
+                        title="Edit Subcategory"
+                        className="p-2.5 bg-purple-500/20 hover:bg-purple-500/40 text-purple-400
+                                 rounded-xl transition-all border border-purple-500/30"
                     >
-                        <FaEdit /> Edit
+                        <FaEdit size={18} />
                     </button>
                     <button
                         onClick={() => onDelete(subcategory.id)}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2
-                                 bg-red-500/20 hover:bg-red-500/30 text-red-400
-                                 rounded-lg transition-all"
+                        title="Delete Subcategory"
+                        className="p-2.5 bg-red-500/20 hover:bg-red-500/40 text-red-400
+                                 rounded-xl transition-all border border-red-500/30"
                     >
-                        <FaTrash /> Delete
+                        <FaTrash size={18} />
                     </button>
                 </div>
             </div>
