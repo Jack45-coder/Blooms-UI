@@ -240,7 +240,7 @@ const Dashboard = () => {
             if (response.success) {
                 showMessage('success', 'Blog deleted successfully!');
                 loadUserData();
-            }
+            }  
         } catch (error) {
             setMessage('error', 'Failed to delete blog');
         }
@@ -351,6 +351,7 @@ const Dashboard = () => {
                         recentBlogs={myBlogs.slice(0, 5)}
                         loading={loading}
                         onViewAll={handleTabChange}
+                        onViewBlog={handleViewBlog}
                     />
                 } />
                 
