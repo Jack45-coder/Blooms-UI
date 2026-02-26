@@ -6,6 +6,7 @@ import DashboardOverview from "../components/dashboard/DashboardOverview";
 import CategoryManager from "../components/categories/CategoryManager";
 import SubCategoryManager from '../components/subcategories/SubCategoryManager';
 import BlogManager from '../components/blogs/BlogManager';
+import BlogViewModal from '../components/blogs/BlogViewModal';  // ✅ Import at top
 import categoryService from '../service/categoryService';
 import subcategoryService from '../service/subcategoryService';
 import blogService from "../service/blogService";
@@ -15,9 +16,9 @@ const Dashboard = () => {
     const location = useLocation();
     const [activeTab, setActiveTab] = useState(localStorage.getItem('activeDashboardTab') || 'dashboard');
     const [loading, setLoading] = useState(false);
-    const [viewingBlog, setViewingBlog] = useState(null);
+    const [viewingBlog, setViewingBlog] = useState(null);  // ✅ State for modal
     const [message, setMessage] = useState({ type: '', text: '' });
-    const [searchParams, setSearchparams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const currentTab = location.pathname.split('/').pop() === 'dashboard'
                        ? 'dashboard'
@@ -58,9 +59,8 @@ const Dashboard = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-    localStorage.setItem('activeDashboardTab', activeTab);
+        localStorage.setItem('activeDashboardTab', activeTab);
     }, [activeTab]);
-
 
     const showMessage = (type, text) => {
         setMessage({ type, text });
@@ -71,10 +71,10 @@ const Dashboard = () => {
         const storedUser = JSON.parse(localStorage.getItem("currentUser"));
         if (storedUser) {
             setUser(storedUser);
-        }else{
+        } else {
             navigate('/login');
         }
-    }, []);
+    }, [navigate]);
 
     useEffect(() => {
         if (user?.id) {
@@ -83,71 +83,56 @@ const Dashboard = () => {
     }, [user]);
 
     const loadUserData = async () => {
-    setLoading(true);
-    try {
-        const[categoriesRes, subcategoriesRes, blogsRes] = await Promise.all([
-            // All APIs call parallel!
-            categoryService.getAllCategories(),
-            subcategoryService.getAllSubCategories(),
-            blogService.getBlogsByAuthor(user.id)
-        ]);
+        setLoading(true);
+        try {
+            const [categoriesRes, subcategoriesRes, blogsRes] = await Promise.all([
+                categoryService.getAllCategories(),
+                subcategoryService.getAllSubCategories(),
+                blogService.getBlogsByAuthor(user.id)
+            ]);
 
-        // Load User Categories!
-        if(categoriesRes?.success && categoriesRes.data){
-            const userCategories = categoriesRes.data.filter(cat => {
-            const creatorId = String(cat.createdBy || "");
-            const currentUserId = String(user.id || "");
-            return creatorId === currentUserId; 
-        });
+            // Load User Categories
+            if (categoriesRes?.success && categoriesRes.data) {
+                const userCategories = categoriesRes.data.filter(cat => {
+                    const creatorId = String(cat.createdBy || "");
+                    const currentUserId = String(user.id || "");
+                    return creatorId === currentUserId;
+                });
 
-            setMyCategories(userCategories);
-            setAllCategories(categoriesRes.data || []);
+                setMyCategories(userCategories);
+                setAllCategories(categoriesRes.data || []);
+            }
+
+            // Load User SubCategories
+            if (subcategoriesRes?.success && subcategoriesRes.data) {
+                const userSubCategories = subcategoriesRes.data.filter(sCat => {
+                    const creatorId = String(sCat.createdBy || "");
+                    const currentUserId = String(user.id || "");
+                    return creatorId === currentUserId;
+                });
+
+                setMySubcategories(userSubCategories);
+                setAvailableSubcategories(subcategoriesRes.data || []);
+            }
+
+            // Load User Blogs
+            if (blogsRes?.success && blogsRes.data) {
+                const currentUserId = String(user.id || "");
+                const userBlogs = blogsRes.data.filter(blog => {
+                    const authorId = String(blog.authorId || "");
+                    return authorId === currentUserId;
+                });
+
+                setMyBlogs(userBlogs);
+            }
+
+        } catch (error) {
+            console.error('Error in loadUserData:', error);
+            showMessage('error', 'Failed to load your data');
+        } finally {
+            setLoading(false);
         }
-
-        
-        // Load User subCategories!
-        if(subcategoriesRes?.success && subcategoriesRes.data){
-            const userSubCategories = subcategoriesRes.data.filter(sCat => {
-            const creatorId = String(sCat.createdBy || "");
-            const currentUserId = String(user.id || "");
-            return creatorId === currentUserId;
-            });
-
-            setMySubcategories(userSubCategories);
-            setAvailableSubcategories(subcategoriesRes.data || []);
-        }
-
-        // Load User Blogs
-        if(blogsRes?.success && blogsRes.data){
-            const currentUserId = String(user.id || "");
-            const userBlogs = blogsRes.data.filter(blog => {
-            const authorId = String(blog.authorId || "");
-            
-            return authorId === currentUserId;
-            });
-
-            setMyBlogs(userBlogs);
-        }
-        
-        
-    } catch (error) {
-        console.error('Error in loadUserData:', error);
-        showMessage('error', 'Failed to load your data');
-    } finally {
-        setLoading(false);
-    }
-};
-
-    // const loadAllCategories = async () => {
-    //     try {
-    //         const response = await categoryService.getAllCategories();
-    //         if (response.success) {
-    //             setAllCategories(response.data || []);
-    //         }
-    //     } catch (error) {
-    //         console.error('Failed to load categories:', error);
-    //     }
-    // };
+    };
 
     const loadSubcategoriesByCategory = async (categoryId) => {
         try {
@@ -204,20 +189,20 @@ const Dashboard = () => {
         }
     };
 
-    // Blog Handler
+    // Blog Handlers
     const handleCreateBlog = async (blogData) => {
-        try{
+        try {
             const response = await blogService.createBlog({
-                ...blogData, 
+                ...blogData,
                 authorId: user.id
             });
 
-            if(response.success){
-                showMessage('success', "Blog created successfully!");  
+            if (response.success) {
+                showMessage('success', "Blog created successfully!");
                 loadUserData();
-                setShowBlogForm(false); 
-            };
-        } catch(error){
+                setShowBlogForm(false);
+            }
+        } catch (error) {
             showMessage('error', error.message || 'Failed to create Blog');
         }
     };
@@ -226,42 +211,68 @@ const Dashboard = () => {
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
         const userId = currentUser?.id || currentUser?.authorId;
 
-        try{
+        try {
             const response = await blogService.updateBlog(id, blogData, userId);
-            if(response.success){
+            if (response.success) {
                 showMessage('success', 'Blog updated successfully!');
                 loadUserData();
                 setShowBlogForm(false);
                 setEditingItem(null);
             }
-        }catch(error){
+        } catch (error) {
             showMessage('error', 'Failed to update blog');
         }
     };
 
     const handleDeleteBlog = async (id) => {
-        if(!window.confirm('Are you sure you want to delete this blog?')) return;
+        if (!window.confirm('Are you sure you want to delete this blog?')) return;
 
-
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
         const userId = currentUser?.id || currentUser?.authorId;
 
-        if(!userId){
+        if (!userId) {
             alert("Session expired. Please login again.");
             return;
         }
 
-        try{
+        try {
             const response = await blogService.deleteBlog(id, userId);
-            if(response.success){
+            if (response.success) {
                 showMessage('success', 'Blog deleted successfully!');
                 loadUserData();
-                alert("Blog deleted!");
             }
-        }catch(error){
+        } catch (error) {
             setMessage('error', 'Failed to delete blog');
         }
     };
+
+    // Blog View Handler
+    const handleViewBlog = (blog) => {
+        console.log('Viewing blog:', blog); // Debug
+        setViewingBlog(blog);
+        // Optional: Update URL with query param
+        navigate(`/dashboard/blogs?view=blog&id=${blog.id}`, { replace: true });
+    };
+
+    // Close Modal Handler
+    const handleCloseModal = () => {
+        setViewingBlog(null);
+        // Remove query params
+        navigate('/dashboard/blogs', { replace: true });
+    };
+
+    // Check URL params on mount/change
+    useEffect(() => {
+        const viewParam = searchParams.get('view');
+        const idParam = searchParams.get('id');
+
+        if (viewParam === 'blog' && idParam && myBlogs.length > 0) {
+            const blog = myBlogs.find(b => b.id === idParam);
+            if (blog) {
+                setViewingBlog(blog);
+            }
+        }
+    }, [searchParams, myBlogs]);
 
     // SubCategory Handlers
     const handleCreateSubCategory = async (data) => {
@@ -269,54 +280,60 @@ const Dashboard = () => {
             const response = await subcategoryService.createSubCategory({
                 ...data, createdBy: user.id
             });
-            if(response.success){
+            if (response.success) {
                 showMessage('success', 'Subcategory created!');
                 loadUserData();
                 setShowSubCategoryForm(false);
             }
-        }catch(error){
+        } catch (error) {
             setMessage('error', 'Error creating subcategory');
         }
     };
 
     const handleUpdateSubCategory = async (id, data) => {
-    try {
-        const response = await subcategoryService.updateSubCategory(id, data);
-        if (response.success) {
-            showMessage('success', 'Subcategory updated!');
-            loadUserData();
-            setShowSubCategoryForm(false);
-            setEditingItem(null);
-        }
-       } catch (error){
-            showMessage('error', 'Error updating subcategory'); 
+        try {
+            const response = await subcategoryService.updateSubCategory(id, data);
+            if (response.success) {
+                showMessage('success', 'Subcategory updated!');
+                loadUserData();
+                setShowSubCategoryForm(false);
+                setEditingItem(null);
+            }
+        } catch (error) {
+            showMessage('error', 'Error updating subcategory');
         }
     };
 
     const handleDeleteSubCategory = async (id) => {
-    if (!window.confirm('Delete this subcategory?')) return;
-    try {
-        const response = await subcategoryService.deleteSubCategory(id);
-        if (response.success) {
-            showMessage('success', 'Subcategory deleted!');
-            loadUserData();
-        }
-    } catch(error) { 
-            showMessage('error', 'Error deleting subcategory'); 
+        if (!window.confirm('Delete this subcategory?')) return;
+        try {
+            const response = await subcategoryService.deleteSubCategory(id);
+            if (response.success) {
+                showMessage('success', 'Subcategory deleted!');
+                loadUserData();
+            }
+        } catch (error) {
+            showMessage('error', 'Error deleting subcategory');
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('currentUser');
-        navigate('/login');
-    };
-
-    if (!user) return "User not found";
+    if (!user) return <div className="text-white p-8">Loading user...</div>;
 
     const stats = {
         categories: myCategories.length,
         subcategories: mySubcategories.length,
         blogs: myBlogs.length
+    };
+
+    // ✅ Helper function to get category name
+    const getCategoryNameForBlog = (blog) => {
+        if (!blog) return 'Uncategorized';
+        
+        const categoryId = blog.categoryId || blog.categoryMappings?.[0]?.categoryId;
+        if (!categoryId) return 'Uncategorized';
+        
+        const category = allCategories.find(c => c.id === categoryId);
+        return category?.name || 'Uncategorized';
     };
 
     return (
@@ -325,67 +342,81 @@ const Dashboard = () => {
             setActiveTab={handleTabChange}
             user={user}
             message={message}
-            // onLogout={handleLogout}
         >
             <Routes>
                 <Route path="/" element={
-                  <DashboardOverview
-                    user={user}
-                    stats={stats}
-                    recentBlogs={myBlogs.slice(0, 5)}
-                    loading={loading}
-                    onViewAll={handleTabChange}
-                  />  
-                }/>
+                    <DashboardOverview
+                        user={user}
+                        stats={stats}
+                        recentBlogs={myBlogs.slice(0, 5)}
+                        loading={loading}
+                        onViewAll={handleTabChange}
+                    />
+                } />
+                
                 <Route path="categories" element={
                     <CategoryManager
-                    categories={myCategories}
-                    loading={loading}
-                    showForm={showCategoryForm}
-                    setShowForm={setShowCategoryForm}
-                    editingItem={editingItem}
-                    setEditingItem={setEditingItem}
-                    onCreate={handleCreateCategory}
-                    onUpdate={handleUpdateCategory}
-                    onDelete={handleDeleteCategory}
-                />
-                }/>
+                        categories={myCategories}
+                        loading={loading}
+                        showForm={showCategoryForm}
+                        setShowForm={setShowCategoryForm}
+                        editingItem={editingItem}
+                        setEditingItem={setEditingItem}
+                        onCreate={handleCreateCategory}
+                        onUpdate={handleUpdateCategory}
+                        onDelete={handleDeleteCategory}
+                    />
+                } />
+                
                 <Route path="subcategories" element={
                     <SubCategoryManager
-                    subcategories={mySubcategories}
-                    allCategories={allCategories}
-                    loading={loading}
-                    showForm={showSubCategoryForm}
-                    setShowForm={setShowSubCategoryForm}
-                    editingItem={editingItem}
-                    setEditingItem={setEditingItem}
-                    onCreate={handleCreateSubCategory}
-                    onUpdate={handleUpdateSubCategory}
-                    onDelete={handleDeleteSubCategory}
-                />
-                }/>
+                        subcategories={mySubcategories}
+                        allCategories={allCategories}
+                        loading={loading}
+                        showForm={showSubCategoryForm}
+                        setShowForm={setShowSubCategoryForm}
+                        editingItem={editingItem}
+                        setEditingItem={setEditingItem}
+                        onCreate={handleCreateSubCategory}
+                        onUpdate={handleUpdateSubCategory}
+                        onDelete={handleDeleteSubCategory}
+                    />
+                } />
+                
+                {/* ✅ Main Blogs Route */}
                 <Route path="blogs" element={
-                    <BlogManager
-                    blogs={myBlogs}
-                    allCategories={allCategories}
-                    loading={loading}
-                    showForm={showBlogForm}
-                    setShowForm={setShowBlogForm}
-                    editingItem={editingItem}
-                    setEditingItem={setEditingItem}
-                    selectedCategory={selectedCategory}
-                    setSelectedCategory={setSelectedCategory}
-                    availableSubcategories={availableSubcategories}
-                    setAvailableSubcategories={setAvailableSubcategories}
-                    loadSubcategoriesByCategory={loadSubcategoriesByCategory}
-                    onCreate={handleCreateBlog}
-                    onUpdate={handleUpdateBlog}
-                    onDelete={handleDeleteBlog}
-                    user={user}
-                    onView={(blog) => setViewingBlog(blog)}
+                    <>
+                        <BlogManager
+                            blogs={myBlogs}
+                            allCategories={allCategories}
+                            loading={loading}
+                            showForm={showBlogForm}
+                            setShowForm={setShowBlogForm}
+                            editingItem={editingItem}
+                            setEditingItem={setEditingItem}
+                            selectedCategory={selectedCategory}
+                            setSelectedCategory={setSelectedCategory}
+                            availableSubcategories={availableSubcategories}
+                            setAvailableSubcategories={setAvailableSubcategories}
+                            loadSubcategoriesByCategory={loadSubcategoriesByCategory}
+                            onCreate={handleCreateBlog}
+                            onUpdate={handleUpdateBlog}
+                            onDelete={handleDeleteBlog}
+                            user={user}
+                            onView={handleViewBlog}  // ✅ Use wrapped handler
+                        />
+                    </>
+                } />
+            </Routes>
+
+            {/* ✅ Blog View Modal - Rendered outside Routes but inside DashboardLayout */}
+            {viewingBlog && (
+                <BlogViewModal
+                    blog={viewingBlog}
+                    categoryName={getCategoryNameForBlog(viewingBlog)}
+                    onClose={handleCloseModal}
                 />
-                }/>
-            </Routes>  
+            )}
         </DashboardLayout>
     );
 };

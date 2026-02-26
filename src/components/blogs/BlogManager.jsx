@@ -37,7 +37,6 @@ const BlogManager = ({
             status: formData.status,
             authorId: currentUser?.id || "",
             tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [],
-
             categoryMappings: [
                 {
                     categoryId: formData.categoryId,
@@ -45,7 +44,6 @@ const BlogManager = ({
                 }
             ]
         };
-        
 
         if (editingItem) {
             onUpdate(editingItem.id, blogData);
@@ -71,13 +69,13 @@ const BlogManager = ({
             title: blog.title,
             description: blog.description,
             content: blog.content,
-            categoryId: blog.categoryId,
-            subCategoryId: blog.subCategoryId,
+            categoryId: blog.categoryId || blog.categoryMappings?.[0]?.categoryId,
+            subCategoryId: blog.subCategoryId || blog.categoryMappings?.[0]?.subCategoryIds?.[0],
             tags: blog.tags?.join(', ') || '',
             status: blog.status,
             imageUrl: blog.imageUrl || ''
         });
-        setSelectedCategory(blog.categoryId);
+        setSelectedCategory(blog.categoryId || blog.categoryMappings?.[0]?.categoryId);
         setShowForm(true);
     };
 
@@ -89,16 +87,24 @@ const BlogManager = ({
 
     // Filter blogs based on search and status
     const filteredBlogs = blogs.filter(blog => {
-        const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            blog.content.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = searchTerm === '' || 
+            blog.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            blog.content?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            blog.description?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesStatus = filterStatus === 'ALL' || blog.status === filterStatus;
         return matchesSearch && matchesStatus;
     });
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-white">My Blogs</h2>
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 className="text-2xl font-bold text-white">My Blogs</h2>
+                    <p className="text-gray-400 text-sm mt-1">
+                        {blogs.length} {blogs.length === 1 ? 'blog' : 'blogs'} total
+                    </p>
+                </div>
                 <button
                     onClick={() => {
                         setEditingItem(null);
@@ -107,12 +113,13 @@ const BlogManager = ({
                     }}
                     className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-blue-600 to-purple-600
                              hover:from-blue-500 hover:to-purple-500 text-white rounded-xl transition-all
-                             duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]"
+                             duration-300 shadow-lg hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] w-full sm:w-auto justify-center"
                 >
                     <FaPlus /> Write New Blog
                 </button>
             </div>
 
+            {/* Search Bar - Only show when not in form mode */}
             {!showForm && blogs.length > 0 && (
                 <BlogSearch
                     searchTerm={searchTerm}
@@ -122,6 +129,7 @@ const BlogManager = ({
                 />
             )}
 
+            {/* Blog Form */}
             {showForm && (
                 <BlogForm
                     formData={formData}
@@ -137,16 +145,15 @@ const BlogManager = ({
                 />
             )}
 
+            {/* Blog List */}
             {loading ? (
                 <LoadingSpinner />
             ) : filteredBlogs.length > 0 ? (
                 <BlogList
                     blogs={filteredBlogs}
                     allCategories={allCategories}
-                    availableSubcategories={availableSubcategories}
                     onEdit={handleEdit}
                     onDelete={onDelete}
-                    onUpdate={onUpdate}
                     onView={onView}
                 />
             ) : (
