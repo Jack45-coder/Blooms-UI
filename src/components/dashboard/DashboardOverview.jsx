@@ -1,7 +1,8 @@
 import { FaFolder, FaSitemap, FaFileAlt, FaArrowRight, FaEye, FaCalendarAlt, FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-const DashboardOverview = ({ user, stats, recentBlogs, loading, onViewAll }) => {
+// FIXED: Added 'onViewBlog' in the props below
+const DashboardOverview = ({ user, stats, recentBlogs, loading, onViewAll, onViewBlog }) => {
     const formatDate = (date) => {
         if (!date) return 'Recent';
         try {
@@ -75,7 +76,7 @@ const DashboardOverview = ({ user, stats, recentBlogs, loading, onViewAll }) => 
                 ))}
             </div>
 
-            {/* 3. Recent Blogs Section - UPDATED HOVER LIGHTING ONLY */}
+            {/* 3. Recent Blogs Section */}
             <div className="group relative p-px overflow-hidden rounded-2xl">
                 <RotatingBorder color="#6366f1" alwaysVisible={true} /> 
                 
@@ -95,7 +96,6 @@ const DashboardOverview = ({ user, stats, recentBlogs, loading, onViewAll }) => 
                         <div className="space-y-3">
                             {recentBlogs.map((blog) => (
                                 <div key={blog.id} className="group/blog relative p-px overflow-hidden rounded-lg transition-all">
-                                    {/* FAST ROTATING LIGHT ON HOVER */}
                                     <div className="absolute inset-[-500%] animate-border-fast z-0 opacity-0 group-hover/blog:opacity-100 transition-opacity duration-300">
                                         <div className="h-full w-full" style={{ background: `conic-gradient(from 0deg, transparent 40%, #3b82f6 50%, #8b5cf6 55%, transparent 65%)` }} />
                                     </div>
@@ -116,7 +116,12 @@ const DashboardOverview = ({ user, stats, recentBlogs, loading, onViewAll }) => 
                                             <h3 className="text-white text-xs font-semibold truncate group-hover/blog:text-blue-400 transition-colors">{blog.title}</h3>
                                             <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1">{blog.description || 'No description available...'}</p>
                                         </div>
-                                        <button className="p-1.5 bg-white/5 hover:bg-blue-600 text-blue-400 hover:text-white rounded-lg transition-all">
+                                        
+                                        {/* FIXED: Added onClick event here */}
+                                        <button 
+                                            onClick={() => onViewBlog(blog)} 
+                                            className="p-1.5 bg-white/5 hover:bg-blue-600 text-blue-400 hover:text-white rounded-lg transition-all cursor-pointer relative z-20"
+                                        >
                                             <FaEye size={10} />
                                         </button>
                                     </div>
