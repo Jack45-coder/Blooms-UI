@@ -44,7 +44,7 @@ const Navbar = () => {
       
       <div className="flex justify-between items-center h-full w-full px-6 md:px-8">
         
-        {/* Logo Section - Full Edge Alignment */}
+        {/* Logo Section */}
         <Link to="/" className="flex items-center space-x-3 group shrink-0">
           <div className="bg-white/5 p-2 rounded-xl border border-white/10 group-hover:bg-blue-600/20 group-hover:border-blue-500/30 transition-all duration-300">
             <span className="text-xl">🌸</span>
@@ -59,7 +59,7 @@ const Navbar = () => {
           </div>
         </Link>
 
-        {/* Desktop Navigation - Right Edge Alignment */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-1">
           {navLinks.map((link) => (
             <Link
@@ -101,7 +101,7 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu Dropdown */}
-      <div className={`md:hidden bg-[#0a0a0c] border-b border-white/5 overflow-hidden transition-all duration-300 ${isMobileMenuOpen ? 'max-h-64 py-4 px-6' : 'max-h-0'}`}>
+      <div className={`md:hidden bg-[#0a0a0c] border-b border-white/5 overflow-hidden transition-all duration-300 ${isMobileMenuOpen ? 'max-h-80 py-4 px-6' : 'max-h-0'}`}>
         <div className="flex flex-col space-y-2">
           {navLinks.map((link) => (
             <Link
@@ -114,6 +114,20 @@ const Navbar = () => {
               <span>{link.label}</span>
             </Link>
           ))}
+
+          {/* ✅ ONLY THIS ADDED: Mobile Logout */}
+          {user && (
+            <button
+              onClick={() => {
+                handleLogout();
+                setIsMobileMenuOpen(false);
+              }}
+              className="flex items-center space-x-4 p-3 rounded-xl text-red-400 hover:bg-white/5 transition-all mt-1"
+            >
+              <FaSignOutAlt />
+              <span>Logout</span>
+            </button>
+          )}
         </div>
       </div>
     </nav>

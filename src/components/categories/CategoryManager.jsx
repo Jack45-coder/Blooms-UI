@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
 import CategoryForm from './CategoryForm';
 import CategoryList from './CategoryList';
@@ -8,7 +9,12 @@ const CategoryManager = ({
     categories, loading, showForm, setShowForm,
     editingItem, setEditingItem, onCreate, onUpdate, onDelete
 }) => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({ name: '', description: '', imageUrl: '' });
+
+    const handleView = (id) => {
+        navigate(`/dashboard/categories/${id}`);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -73,6 +79,7 @@ const CategoryManager = ({
                     categories={categories}
                     onEdit={handleEdit}
                     onDelete={onDelete}
+                    onView={handleView}
                 />
             ) : (
                 <EmptyState

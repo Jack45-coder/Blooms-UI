@@ -13,14 +13,18 @@ const DashboardLayout = ({
 }) => {
   // Mobile sidebar toggle state
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // Desktop collapsed state
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <div className="flex min-h-screen w-full bg-[#0a0a0c] text-slate-200 overflow-hidden font-sans pt-16">
+      {/* Sidebar - Desktop */}
       <aside
         className={`
-        fixed inset-y-0 left-0 z-100 w-64 transform transition-transform duration-300 ease-in-out bg-[#0f0f12] 
+        fixed inset-y-0 left-0 z-100 transform transition-all duration-300 ease-in-out bg-[#0f0f12] 
         md:relative md:translate-x-0 md:z-0
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        ${isCollapsed ? 'md:w-20' : 'md:w-64'}
       `}>
         <Sidebar
           activeTab={activeTab}
@@ -29,6 +33,8 @@ const DashboardLayout = ({
             setIsSidebarOpen(false);
           }}
           user={user}
+          onLogout={onLogout}
+          onCollapse={setIsCollapsed}
         />
       </aside>
 
@@ -41,7 +47,7 @@ const DashboardLayout = ({
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-[calc(100vh-64px)] overflow-hidden">
+      <div className={`flex-1 flex flex-col min-w-0 h-[calc(100vh-64px)] overflow-hidden transition-all duration-300`}>
         <header className="shrink-0 relative z-40 overflow-hidden bg-[#0a0a0c] border-b border-white/10">
           <TopBar
             activeTab={activeTab}
@@ -52,7 +58,7 @@ const DashboardLayout = ({
 
         <main className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar bg-[radial-gradient(at_top_right,rgba(29,78,216,0.1),transparent_50%)]">
           <div className="max-w-7xl mx-auto">
-            {message.text && <MessageDisplay message={message} />}
+            {message?.text && <MessageDisplay message={message} />}
             {children}
           </div>
         </main>

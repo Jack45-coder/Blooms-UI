@@ -150,7 +150,7 @@ const BlogViewModal = ({ blog, categoryName, onClose }) => {
         </div>
       </main>
 
-      <style jsx>{`
+      <style >{`
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }

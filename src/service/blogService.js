@@ -15,7 +15,7 @@ const blogService = {
     // Get All Blogs
     getAllBlogs: async () => {
         try {
-            const response = await api.get('api/blogs/all');
+            const response = await api.get('/blogs/all');
             if(response.data){
                if(response.data.success !== undefined){
                 return response.data;

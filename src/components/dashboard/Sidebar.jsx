@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaThLarge, FaFolder, FaFolderOpen, FaBlog, FaSignOutAlt } from 'react-icons/fa';
 import SidebarItem from './SidebarItem';
 
