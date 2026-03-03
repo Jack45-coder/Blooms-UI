@@ -40,7 +40,7 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
                             <p className="text-sm font-bold text-white leading-tight truncate">
                                 {user?.name || 'User'}
                             </p>
-                            <p className="text-[9px] text-gray-500 uppercase tracking-tighter mt-1 truncate opacity-80">
+                            <p className="text-[9px] text-gray-500 lowercase tracking-tighter mt-1 truncate opacity-80">
                                 {user?.email || 'jackeyjazzbgp1234@gmail.com'}
                             </p>
                         </div>

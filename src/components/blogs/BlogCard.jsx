@@ -9,7 +9,6 @@ import {
 
 const BlogCard = ({ blog, categoryName, onEdit, onDelete, onView }) => {
   return (
-    /* Outer Container with Racing Border Logic */
     <div className="group relative p-[1.5px] overflow-hidden rounded-2rem transition-all duration-500 hover:scale-[1.01]">
       {/* 1. ALWAYS-ON RACING BORDER (Blue/Cyan Flow) */}
       <div className="absolute inset-[-300%] animate-border-slow z-0 opacity-30 group-hover:opacity-100 transition-opacity duration-500">
@@ -79,9 +78,11 @@ const BlogCard = ({ blog, categoryName, onEdit, onDelete, onView }) => {
             <div className="flex items-center gap-4 text-[10px] text-gray-500 mb-4">
               <span className="flex items-center gap-1.5">
                 <FaCalendarAlt className="opacity-50" />
-                {blog.createdDTTM?.$date
-                  ? new Date(blog.createdDTTM.$date).toLocaleDateString()
-                  : "Recent"}
+                {new Date(blog.createdDTTM).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })}
               </span>
               {blog.views !== undefined && (
                 <span className="flex items-center gap-1.5">
