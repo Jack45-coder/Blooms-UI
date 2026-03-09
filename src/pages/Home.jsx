@@ -142,86 +142,57 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0c] text-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-linear-to-br from-blue-900/20 via-purple-900/20 to-pink-900/20 border-b border-white/10">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-600/20 rounded-full blur-[100px]" />
-          <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-600/20 rounded-full blur-[100px]" />
+      <section className="relative pt-20 pb-10 px-4 overflow-hidden border-b border-white/5">
+        {/* 1. Seamless Background Glows */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10">
+          {/* Navbar ke piche wala glow */}
+          <div className="absolute top-0 left-1/4 w-500px h-300px bg-blue-600/20 blur-[120px] rounded-full" />
+          <div className="absolute top-10 right-1/4 w-500px h-300px bg-purple-600/15 blur-[120px] rounded-full" />
+
+          {/* Subtle Grid for depth */}
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] brightness-100" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Bloom's Blog System
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+
+          <h1 className="flex flex-col gap-2 mb-8 select-none">
+            {/* Line 1: Main Brand */}
+            <span className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none italic bg-linear-to-b from-white via-white to-white/20 bg-clip-text text-transparent opacity-90">
+              BLOOM'S
+            </span>
+
+            {/* Line 2: The Action Part */}
+            <div className="flex flex-wrap items-center justify-center gap-x-4 md:gap-x-6">
+              <span className="text-5xl md:text-7xl lg:text-8xl font-thin tracking-widest leading-none text-white/40 uppercase">
+                Blog
               </span>
-            </h1>
-            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              Discover amazing stories, insights, and knowledge from our
-              community of writers.
-            </p>
-
-            {/* Search Bar */}
-            <div className="max-w-2xl mx-auto relative">
-              <div className="relative">
-                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search blogs..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
-                />
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm("")}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-                  >
-                    <FaTimes />
-                  </button>
-                )}
-              </div>
+              <span className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none bg-linear-to-r from-blue-400 via-indigo-500 to-purple-600 bg-clip-text text-transparent animate-gradient-x">
+                System.
+              </span>
             </div>
-          </div>
-        </div>
-      </section>
+          </h1>
 
-      {/* Filters Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4">
-          <div className="flex items-center gap-2">
-            <FaFilter className="text-gray-400" />
-            <span className="text-sm text-gray-300">Filter by:</span>
-          </div>
+          <p className="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl font-medium leading-relaxed mb-10">
+            Discover amazing stories, insights, and knowledge from our community
+            of writers.
+          </p>
 
-          <div className="flex flex-wrap gap-3">
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500/50"
-            >
-              <option value="all">All Categories</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500/50"
-            >
-              <option value="latest">Latest First</option>
-              <option value="oldest">Oldest First</option>
-              <option value="mostViewed">Most Viewed</option>
-              <option value="mostLiked">Most Liked</option>
-            </select>
-          </div>
-
-          <div className="text-sm text-gray-400">
-            {filteredBlogs.length}{" "}
-            {filteredBlogs.length === 1 ? "blog" : "blogs"} found
+          {/* Search Bar - Modern Design */}
+          <div className="max-w-2xl mx-auto group relative">
+            <div className="absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+            <div className="relative flex items-center bg-[#0a0a0c]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-2xl">
+              <FaSearch className="ml-4 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Search for blogs, tips, or categories..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="flex-1 bg-transparent border-none focus:ring-0 text-white px-4 py-3 placeholder:text-gray-600"
+              />
+              <button className="hidden sm:block bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-xl transition-all">
+                Search
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -341,33 +312,6 @@ const Home = () => {
             </p>
           </div>
         )}
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 border border-white/10 p-12 text-center">
-          <div className="absolute inset-0">
-            <div className="absolute top-0 left-0 w-64 h-64 bg-blue-600/20 rounded-full blur-[80px]" />
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-600/20 rounded-full blur-[80px]" />
-          </div>
-
-          <div className="relative z-10">
-            <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
-            <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              Get the latest blogs and updates delivered directly to your inbox.
-            </p>
-            <div className="max-w-md mx-auto flex gap-3">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50"
-              />
-              <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-                Subscribe
-              </button>
-            </div>
-          </div>
-        </div>
       </section>
     </div>
   );

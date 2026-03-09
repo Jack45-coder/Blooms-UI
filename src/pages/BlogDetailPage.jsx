@@ -111,7 +111,7 @@ const BlogDetailPage = () => {
 
         <div className="flex flex-wrap items-center gap-6 mb-10 pb-8 border-b border-white/5">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center border-2 border-white/10 shadow-lg">
+            <div className="w-12 h-12 rounded-full bg-linear-to-br from-blue-600 to-indigo-600 flex items-center justify-center border-2 border-white/10 shadow-lg">
               <FaUser size={20} className="text-white" />
             </div>
             <div>
@@ -143,7 +143,7 @@ const BlogDetailPage = () => {
             <img
               src={blog.imageUrl}
               alt={blog.title}
-              className="w-full h-auto object-cover max-h-[600px]"
+              className="w-full h-auto object-cover max-h-600px"
               onError={(e) => {
                 e.target.src =
                   "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000";
