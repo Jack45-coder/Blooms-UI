@@ -45,6 +45,7 @@ const blogService = {
     getBlogById: async (blogId) => {
         try {
             const response = await api.get(`/blogs/${blogId}`);
+            console.log(response);
             return response.data;
         } catch (error) {
             console.error('Get blog error:', error);

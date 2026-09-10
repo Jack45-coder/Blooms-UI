@@ -61,7 +61,7 @@ const FloatingShape = ({ index }) => {
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    userName: "",
     phone: "",
     email: "",
     password: "",
@@ -189,9 +189,9 @@ const Register = () => {
                     <FaUser className="absolute left-3 text-gray-500 text-sm group-hover:text-blue-400 transition-colors" />
                     <input
                       type="text"
-                      name="name"
+                      name="userName"
                       placeholder="John Doe"
-                      value={formData.name}
+                      value={formData.userName}
                       onChange={handleChange}
                       className="bg-white/5 border border-white/10 p-2.5 pl-9 w-full rounded-xl text-white outline-none focus:ring-2 focus:ring-blue-500/50 focus:bg-white/10 transition-all placeholder:text-gray-600 group-hover:border-blue-400/30 text-sm"
                       required

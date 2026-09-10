@@ -83,25 +83,27 @@ const Login = () => {
     setMessage("");
     try {
       const response = await api.post("/account/login", form);
+      console.log("CHECK LOGIN RESPONSE --->", response.data); //
       const responseData = response.data;
 
       if (responseData && responseData.success) {
-          const token = responseData.data.id;
-          const role = responseData.data.role;
-          const userData = responseData.data;
+          const token = responseData.data.token;
+          const userData = responseData.data.user;
+          const role = userData.role; // ✅ Sahi path: responseData.data.user.role
 
           localStorage.setItem("token", token);
-          localStorage.setItem("userRole", role);
+          localStorage.setItem("userRole", JSON.stringify(role)); // Role array ko save karein
           localStorage.setItem("currentUser", JSON.stringify(userData));
 
           setMessage("Welcome to Blooms.");
           setTimeout(() => {
-             // Redirect based on role
-             if (role === "ADMIN") {
-                 navigate("/admin-dashboard");
-                   } else {
-                       navigate("/dashboard");
-                   }
+               // ✅ Role check karein ki kya usme ADMIN hai ya nahi
+               const roleStr = JSON.stringify(role);
+               if (roleStr.includes("ADMIN")) {
+                   navigate("/admin-dashboard");
+               } else {
+                   navigate("/dashboard");
+               }
           }, 1500);
       } else {
         setError(responseData.message || "Invalid credentials");

@@ -94,14 +94,22 @@ const Dashboard = () => {
         blogService.getBlogsByAuthor(user.id),
       ]);
 
+      console.log("🔥 CATEGORY DATA:", categoriesRes.data);
+      console.log("🔥 CURRENT USER:", user);
+
       // Load User Categories
       if (categoriesRes?.success && categoriesRes.data) {
         const userCategories = categoriesRes.data.filter((cat) => {
+          console.log("🔥 CATEGORY:", cat);
+    console.log("🔥 CATEGORY CREATED BY:", cat.createdBy);
+    console.log("🔥 CURRENT USER ID:", user.id);
           const creatorId = String(cat.createdBy || "");
           const currentUserId = String(user.id || "");
           return creatorId === currentUserId;
         });
 
+         console.log("🔥 FILTERED USER CATEGORIES:", userCategories);
+         
         setMyCategories(userCategories);
         setAllCategories(categoriesRes.data || []);
       }
@@ -356,7 +364,7 @@ const Dashboard = () => {
     >
       <Routes>
         <Route
-          path="/"
+          index
           element={
             <DashboardOverview
               user={user}
