@@ -41,13 +41,16 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 w-full z-110 bg-[#0a0a0c]/90 backdrop-blur-xl border-b border-white/5 h-16">
-      
       <div className="flex justify-between items-center h-full w-full px-6 md:px-8">
-        
         {/* Logo Section */}
         <Link to="/" className="flex items-center space-x-3 group shrink-0">
-          <div className="bg-white/5 p-2 rounded-xl border border-white/10 group-hover:bg-blue-600/20 group-hover:border-blue-500/30 transition-all duration-300">
-            <span className="text-xl">🌸</span>
+          {/* Square box hatane ke liye yahan se bg, padding aur border hata diya hai */}
+          <div className="transition-all duration-300">
+            <img
+              src="/blooms-logo2.0.jpeg"
+              alt="Blooms Logo"
+              className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full object-contain"
+            />
           </div>
           <div className="flex flex-col">
             <h1 className="font-bold text-lg tracking-tight text-white group-hover:text-blue-400 transition-colors leading-none">
@@ -66,9 +69,10 @@ const Navbar = () => {
               key={link.path}
               to={link.path}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 flex items-center space-x-2
-                ${isActive(link.path)
-                  ? "bg-blue-600/10 text-blue-400 border border-blue-500/20 shadow-sm shadow-blue-500/5"
-                  : "text-gray-400 hover:bg-white/5 hover:text-white"
+                ${
+                  isActive(link.path)
+                    ? "bg-blue-600/10 text-blue-400 border border-blue-500/20 shadow-sm shadow-blue-500/5"
+                    : "text-gray-400 hover:bg-white/5 hover:text-white"
                 }`}
             >
               <link.icon className="w-3.5 h-3.5" />
@@ -93,15 +97,23 @@ const Navbar = () => {
           className="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 active:scale-95 transition-transform"
         >
           <div className="w-6 h-5 relative flex flex-col justify-between">
-            <span className={`w-full h-0.5 bg-white rounded-full transition-all ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`w-full h-0.5 bg-white rounded-full transition-all ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
-            <span className={`w-full h-0.5 bg-white rounded-full transition-all ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            <span
+              className={`w-full h-0.5 bg-white rounded-full transition-all ${isMobileMenuOpen ? "rotate-45 translate-y-2" : ""}`}
+            />
+            <span
+              className={`w-full h-0.5 bg-white rounded-full transition-all ${isMobileMenuOpen ? "opacity-0" : ""}`}
+            />
+            <span
+              className={`w-full h-0.5 bg-white rounded-full transition-all ${isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+            />
           </div>
         </button>
       </div>
 
       {/* Mobile Menu Dropdown */}
-      <div className={`md:hidden bg-[#0a0a0c] border-b border-white/5 overflow-hidden transition-all duration-300 ${isMobileMenuOpen ? 'max-h-80 py-4 px-6' : 'max-h-0'}`}>
+      <div
+        className={`md:hidden bg-[#0a0a0c] border-b border-white/5 overflow-hidden transition-all duration-300 ${isMobileMenuOpen ? "max-h-80 py-4 px-6" : "max-h-0"}`}
+      >
         <div className="flex flex-col space-y-2">
           {navLinks.map((link) => (
             <Link
@@ -115,7 +127,6 @@ const Navbar = () => {
             </Link>
           ))}
 
-          {/* ✅ ONLY THIS ADDED: Mobile Logout */}
           {user && (
             <button
               onClick={() => {
