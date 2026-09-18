@@ -29,7 +29,7 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
                         {/* Avatar with Glow Effect */}
                         <div className="relative shrink-0">
                             <div className="h-10 w-10 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
-                                {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                                {user?.userName?.charAt(0)?.toUpperCase() || 'U'}
                             </div>
                             {/* Status Dot */}
                             <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-green-500 border-2 border-[#0a0a0c] rounded-full"></div>
@@ -38,10 +38,10 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
                         {/* Name and Email Details */}
                         <div className='min-w-0 flex-1'>
                             <p className="text-sm font-bold text-white leading-tight truncate">
-                                {user?.name || 'User'}
+                                {user?.userName || 'User'}
                             </p>
                             <p className="text-[9px] text-gray-500 lowercase tracking-tighter mt-1 truncate opacity-80">
-                                {user?.email || 'jackeyjazzbgp1234@gmail.com'}
+                                {user?.email || 'youremail@gmail.com'}
                             </p>
                         </div>
                     </div>

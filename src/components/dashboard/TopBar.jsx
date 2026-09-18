@@ -38,7 +38,7 @@ const TopBar = ({ activeTab, user, toggleSidebar}) => {
                             {getTabTitle()}
                         </h2>
                         <p className="text-xs text-gray-500 mt-1 hidden sm:block">
-                            {getGreeting()}, {user?.name?.split(' ')[0] || 'User'}! 👋
+                            {getGreeting()}, {user?.userName?.split(' ')[0] || 'User'}! 👋
                         </p>
                     </div>
                 </div>
@@ -47,10 +47,10 @@ const TopBar = ({ activeTab, user, toggleSidebar}) => {
                     {/* User Info */}
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg border border-white/10">
                         <div className="w-7 h-7 rounded-lg bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">
-                            {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                            {user?.userName?.charAt(0)?.toUpperCase() || 'U'}
                         </div>
                         <span className="text-sm text-gray-300 hidden lg:block">
-                            {user?.name?.split(' ')[0] || 'User'}
+                            {user?.userName?.split(' ')[0] || 'User'}
                         </span>
                     </div>
                 </div>

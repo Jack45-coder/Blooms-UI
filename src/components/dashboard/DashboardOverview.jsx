@@ -46,7 +46,7 @@ const DashboardOverview = ({ user, stats, recentBlogs, loading, onViewAll, onVie
                     </div>
                     <h1 className="text-2xl font-bold text-white mb-2">
                         Hello, <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-purple-400">
-                            {user?.name || 'User'}!
+                            {user?.userName || 'User'}!
                         </span>
                     </h1>
                     <p className="text-gray-400 text-sm">Your creative engine is fueled. You have new activity.</p>
